@@ -24,7 +24,7 @@
       { label: 'תכני העמותה', href: 'content.html' }
     ]},
     { label: 'מכינות ערבה', children: [
-      { label: 'על המכינות', href: 'mechinot.html', icon: 'logo.svg' },
+      { label: 'על המכינות', href: 'mechinot.html', icon: 'logo-ruach-arava.webp' },
       { label: 'מכינת חצבה', href: 'hatzeva.html', icon: 'card-hatzeva.webp' },
       { label: 'מכינת עין יהב', href: 'ein-yahav.html', icon: 'card-ein-yahav.webp' },
       { label: 'מכינת פארן', href: 'paran.html', icon: 'card-paran.webp' },
@@ -35,7 +35,7 @@
       { label: 'עבודה עברית', href: 'avoda-ivrit.html', icon: 'card-avoda.webp' },
       { label: 'חוות בין השיטין', href: 'farm.html', icon: 'card-farm.webp' },
       { label: 'מדרשת הערבה', href: 'midrasha.html', icon: 'card-midrasha.webp' },
-      { label: 'שנת שירות', href: 'service-year.html', icon: 'logo.svg' },
+      { label: 'שנת שירות', href: 'service-year.html', icon: 'logo-ruach-arava.webp' },
       { label: 'התיישבות בערבה', href: 'settlement.html', icon: 'card-settlement.webp' },
       { label: 'בוגרים', href: 'alumni.html', icon: 'card-alumni.webp' }
     ]},
@@ -87,7 +87,7 @@
     menu.setAttribute('role', 'dialog'); menu.setAttribute('aria-modal', 'true'); menu.setAttribute('aria-label', 'תפריט ראשי');
     menu.innerHTML =
       '<div class="mob-head">' +
-        '<a class="mob-brand" href="index.html" aria-label="דף הבית"><img src="images/logo.svg" alt="" width="34" height="37"><strong>רוח ערבה</strong></a>' +
+        '<a class="mob-brand" href="index.html" aria-label="עמותת רוח ערבה — דף הבית"><img src="images/logo-ruach-arava.webp" alt="עמותת רוח ערבה" width="98" height="38"></a>' +
         '<button class="mob-close-btn" type="button" aria-label="סגירת התפריט">✕</button>' +
       '</div>' +
       '<nav class="mob-nav" aria-label="ניווט ראשי">' +
@@ -145,8 +145,7 @@
         // בנייד: ההמבורגר בצד ההתחלה (ימין), לפני הלוגו
         '<button class="menu-btn" aria-label="תפריט" aria-expanded="false" aria-controls="mob-menu"><span></span></button>' +
         '<a class="brand" href="index.html" aria-label="' + SITE.name + ' — דף הבית">' +
-          '<img src="images/logo.svg" alt="" width="42" height="46">' +
-          '<span class="brand-text"><strong>רוח ערבה</strong><small>חינוך · התיישבות · ציונות</small></span>' +
+          '<img class="brand-logo" src="images/logo-ruach-arava.webp" alt="עמותת רוח ערבה" width="124" height="48">' +
         '</a>' +
         '<nav class="main-nav" id="main-nav" aria-label="ניווט ראשי"><ul>' + NAV.map(navItem).join('') + '</ul></nav>' +
         '<div class="header-actions">' +
@@ -184,7 +183,7 @@
       '<div class="container">' +
         '<div class="footer-grid">' +
           '<div>' +
-            '<div class="footer-brand"><img src="images/logo.svg" alt=""><strong>רוח ערבה</strong></div>' +
+            '<div class="footer-brand"><img src="images/logo-ruach-arava.webp" alt="עמותת רוח ערבה" width="155" height="60"></div>' +
             '<p class="footer-about">מאז 2009 מפתחים ומפעילים תכניות חינוכיות-ציוניות לצעירים בערבה, לחיזוק ההתיישבות והחברה הישראלית.</p>' +
             '<div class="socials">' +
               '<a href="' + SITE.facebook + '" target="_blank" rel="noopener" aria-label="פייסבוק">' + ICONS.fb + '</a>' +
@@ -204,7 +203,7 @@
         '<div class="footer-bottom">' +
           '<span>© ' + new Date().getFullYear() + ' כל הזכויות שמורות ל' + SITE.name + '</span>' +
           '<div class="footer-legal"><a href="accessibility.html">הצהרת נגישות</a><span class="footer-legal-sep" aria-hidden="true">|</span><a href="privacy.html">מדיניות פרטיות</a></div>' +
-          '<a class="ombee-credit" href="https://ombee.co.il" target="_blank" rel="noopener"><span>עיצוב ובנייה ע"י</span><img class="ombee-logo" src="images/ombee-logo-white.webp" alt="OMBee" width="83" height="24"></a>' +
+          '<a class="ombee-credit" href="https://ombee.co.il" target="_blank" rel="noopener"><span>עיצוב ובנייה ע"י</span><img class="ombee-logo" src="images/ombee-logo.webp" alt="OMBee" width="83" height="24"></a>' +
         '</div>' +
       '</div>';
   }

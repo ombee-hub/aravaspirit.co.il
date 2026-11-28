@@ -289,3 +289,110 @@ body.nav-open .ombee-a11y-btn{display:none}
   });
 })();
 
+/* ─────────────────────────────────────────────
+   עמותת רוח ערבה — באנר עוגיות (מבוסס על OMBee)
+   מופיע רק בדף הבית, פעם אחת בכל כניסה לאתר (sessionStorage),
+   וכפתור תו הנגישות יושב מעליו, בגובה שורת הכפתורים
+───────────────────────────────────────────── */
+(function () {
+  const COOKIE_KEY = 'aravaspirit-cookies';
+  let cookieSeen=false; try { cookieSeen = !!sessionStorage.getItem(COOKIE_KEY); } catch(e){}
+  if (cookieSeen) return;
+  var cookiePath = location.pathname;
+  var isHome = cookiePath.endsWith('/') || /\/index\.html$/i.test(cookiePath);
+  if (!isHome) return;
+
+  const css = document.createElement('style');
+  css.textContent = `
+.ombee-cookie-banner{
+  position:fixed;bottom:0;left:0;right:0;z-index:9999;
+  background:#FBF8F2;border-top:1.5px solid rgba(50,64,29,.18);
+  box-shadow:0 -4px 24px rgba(0,0,0,.1);
+  padding:18px 96px;
+  display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;
+  direction:rtl;font-family:'Assistant', sans-serif;
+  transform:translateY(100%);
+  animation:ombee-cookie-slide .4s ease forwards;
+}
+@keyframes ombee-cookie-slide{to{transform:translateY(0)}}
+.ombee-cookie-banner.hide{
+  animation:ombee-cookie-hide .3s ease forwards;
+}
+@keyframes ombee-cookie-hide{to{transform:translateY(120%);opacity:0}}
+.ombee-cookie-icon{width:38px;height:38px;flex-shrink:0;display:block;filter:drop-shadow(0 3px 6px rgba(184,118,50,.25))}
+.ombee-cookie-text{
+  font-size:14px;color:#3A2A1A;font-weight:500;line-height:1.6;min-width:240px;
+}
+.ombee-cookie-text a{color:#32401D;font-weight:600;text-decoration:underline}
+.ombee-cookie-text a:hover{opacity:.7}
+.ombee-cookie-actions{display:flex;gap:10px;flex-shrink:0}
+.ombee-cookie-actions button{min-width:110px;text-align:center}
+.ombee-cookie-accept{
+  padding:10px 28px;border:none;border-radius:8px;
+  background:#32401D;color:#fff;font-size:14px;font-weight:700;
+  font-family:'Assistant', sans-serif;cursor:pointer;transition:all .25s;
+  white-space:nowrap;
+}
+.ombee-cookie-accept:hover{background:#6F8A35;transform:translateY(-1px)}
+.ombee-cookie-decline{
+  padding:10px 28px;border:1.5px solid #ddd;border-radius:8px;
+  background:#fff;color:#32401D;font-size:14px;font-weight:700;border-color:rgba(50,64,29,.35)!important;
+  font-family:'Assistant', sans-serif;cursor:pointer;transition:all .25s;
+  white-space:nowrap;
+}
+.ombee-cookie-decline:hover{border-color:#32401D!important;background:#F4EEE1}
+@media(max-width:1100px){
+  .ombee-cookie-banner{left:12px;right:12px;bottom:12px;max-width:640px;margin:0 auto;display:grid;grid-template-columns:40px 1fr;align-items:start;gap:0 12px;padding:16px 18px 14px;border:1.5px solid rgba(50,64,29,.18);border-radius:24px;box-shadow:0 14px 40px rgba(58,42,26,.18);background-position:center;text-align:right;transform:translateY(120%)}
+  .ombee-cookie-icon{width:40px;height:40px;margin-top:2px}
+  .ombee-cookie-text{min-width:0;font-size:13.5px;line-height:1.55;margin-bottom:14px;align-self:center}
+  .ombee-cookie-actions{grid-column:1 / -1;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 58px}
+  .ombee-cookie-actions button{min-width:0;padding:11px 6px;font-size:15px;border-radius:10px}
+}
+@media(min-width:601px) and (max-width:1100px){
+  .ombee-cookie-actions{padding:0 90px}
+  .ombee-cookie-text{font-size:14px}
+}
+`;
+  document.head.appendChild(css);
+
+  const banner = document.createElement('div');
+  banner.className = 'ombee-cookie-banner';
+  banner.innerHTML = `
+    <svg class="ombee-cookie-icon" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 4A28 28 0 1 0 60 32A7 7 0 0 1 51 23A7 7 0 0 1 42 13A7 7 0 0 1 32 4Z" fill="#E3A857" stroke="#B87632" stroke-width="2.5" stroke-linejoin="round"/><path d="M14 40a20 20 0 0 0 22 14" fill="none" stroke="#F2C98A" stroke-width="3" stroke-linecap="round" opacity=".7"/><circle cx="22" cy="21" r="3.4" fill="#6B3B1E"/><circle cx="17" cy="35" r="3" fill="#6B3B1E"/><circle cx="31" cy="31" r="3.6" fill="#6B3B1E"/><circle cx="41" cy="44" r="3.2" fill="#6B3B1E"/><circle cx="27" cy="47" r="2.6" fill="#6B3B1E"/><circle cx="47" cy="34" r="2.4" fill="#6B3B1E"/><circle cx="56" cy="15" r="1.8" fill="#E3A857"/><circle cx="50" cy="8" r="1.3" fill="#E3A857"/></svg>
+    <div class="ombee-cookie-text">
+      אתר זה משתמש בעוגיות (Cookies) כדי לשפר את חוויית הגלישה שלך.
+      לפרטים נוספים ניתן לעיין ב<a href="privacy.html">מדיניות הפרטיות</a>.
+    </div>
+    <div class="ombee-cookie-actions">
+      <button class="ombee-cookie-accept">מאשר/ת</button>
+      <button class="ombee-cookie-decline">ביטול</button>
+    </div>
+  `;
+  document.body.appendChild(banner);
+
+  const a11yBtn = document.querySelector('.ombee-a11y-btn');
+  function liftA11y(){
+    if (!a11yBtn) return;
+    const show = banner.isConnected && !banner.classList.contains('hide');
+    if (!show) { a11yBtn.style.bottom = ''; return; }
+    const act = banner.querySelector('.ombee-cookie-actions');
+    const fromBannerBottom = banner.offsetHeight - (act.offsetTop + act.offsetHeight / 2);
+    a11yBtn.style.bottom = Math.round(parseFloat(getComputedStyle(banner).bottom) + fromBannerBottom - a11yBtn.offsetHeight / 2) + 'px';
+  }
+  requestAnimationFrame(liftA11y);
+  window.addEventListener('resize', liftA11y);
+
+  banner.querySelector('.ombee-cookie-accept').addEventListener('click', () => {
+    try { sessionStorage.setItem(COOKIE_KEY, '1'); } catch(e){}
+    banner.classList.add('hide');
+    liftA11y();
+    setTimeout(() => banner.remove(), 350);
+  });
+
+  banner.querySelector('.ombee-cookie-decline').addEventListener('click', () => {
+    try { sessionStorage.setItem(COOKIE_KEY, '0'); } catch(e){}
+    banner.classList.add('hide');
+    liftA11y();
+    setTimeout(() => banner.remove(), 350);
+  });
+})();

@@ -24,20 +24,20 @@
       { label: 'תכני העמותה', href: 'content.html' }
     ]},
     { label: 'מכינות ערבה', children: [
-      { label: 'על המכינות', href: 'mechinot.html' },
-      { label: 'מכינת חצבה', href: 'hatzeva.html' },
-      { label: 'מכינת עין יהב', href: 'ein-yahav.html' },
-      { label: 'מכינת פארן', href: 'paran.html' },
-      { label: 'מכינת צופר', href: 'tzofar.html' },
-      { label: 'מכינת ״ניר בערבה״', href: 'nir-baarava.html' }
+      { label: 'על המכינות', href: 'mechinot.html', icon: 'logo.svg' },
+      { label: 'מכינת חצבה', href: 'hatzeva.html', icon: 'card-hatzeva.webp' },
+      { label: 'מכינת עין יהב', href: 'ein-yahav.html', icon: 'card-ein-yahav.webp' },
+      { label: 'מכינת פארן', href: 'paran.html', icon: 'card-paran.webp' },
+      { label: 'מכינת צופר', href: 'tzofar.html', icon: 'card-tzofar.webp' },
+      { label: 'מכינת ״ניר בערבה״', href: 'nir-baarava.html', icon: 'nir-logo.webp' }
     ]},
     { label: 'תכניות', children: [
-      { label: 'עבודה עברית', href: 'avoda-ivrit.html' },
-      { label: 'חוות בין השיטין', href: 'farm.html' },
-      { label: 'מדרשת הערבה', href: 'midrasha.html' },
-      { label: 'שנת שירות', href: 'service-year.html' },
-      { label: 'התיישבות בערבה', href: 'settlement.html' },
-      { label: 'בוגרים', href: 'alumni.html' }
+      { label: 'עבודה עברית', href: 'avoda-ivrit.html', icon: 'card-avoda.webp' },
+      { label: 'חוות בין השיטין', href: 'farm.html', icon: 'card-farm.webp' },
+      { label: 'מדרשת הערבה', href: 'midrasha.html', icon: 'card-midrasha.webp' },
+      { label: 'שנת שירות', href: 'service-year.html', icon: 'logo.svg' },
+      { label: 'התיישבות בערבה', href: 'settlement.html', icon: 'card-settlement.webp' },
+      { label: 'בוגרים', href: 'alumni.html', icon: 'card-alumni.webp' }
     ]},
     { label: 'דרושים', href: 'jobs.html' },
     { label: 'יצירת קשר', href: 'contact.html' }
@@ -62,10 +62,78 @@
       return '<li class="has-sub">' +
         '<button class="nav-toggle-sub" aria-expanded="false" aria-controls="sub-' + i + '"' + (active ? ' data-active' : '') + '>' + item.label + ICONS.chev + '</button>' +
         '<ul class="sub" id="sub-' + i + '">' + item.children.map(function (c) {
-          return '<li><a href="' + c.href + '"' + (c.href === current ? ' aria-current="page"' : '') + '>' + c.label + '</a></li>';
+          var ic = c.icon ? '<span class="sub-ic"><img src="images/' + c.icon + '" alt="" loading="lazy"></span>' : '';
+          return '<li><a href="' + c.href + '"' + (c.icon ? ' class="has-ic"' : '') + (c.href === current ? ' aria-current="page"' : '') + '>' + ic + c.label + '</a></li>';
         }).join('') + '</ul></li>';
     }
     return '<li><a href="' + item.href + '"' + (item.href === current ? ' aria-current="page"' : '') + '>' + item.label + '</a></li>';
+  }
+
+  // תפריט צד לנייד — לפי האתר של אגרוסופט: מגירה לבנה מימין, לוגו + סגירה,
+  // קטגוריות נפתחות (לתכניות יש אייקון של הלוגו), וכפתור יצירת קשר בסוף
+  var PLANE = '<svg class="mob-plane" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+
+  function mobLink(c) {
+    var cur = c.href === current ? ' aria-current="page"' : '';
+    if (!c.icon) return '<a href="' + c.href + '"' + cur + '>' + c.label + '</a>';
+    return '<a class="mob-prod" href="' + c.href + '"' + cur + '><span class="mob-prod-ic"><img src="images/' + c.icon + '" alt="" loading="lazy"></span><span class="mob-prod-txt">' + c.label + '</span></a>';
+  }
+
+  function renderDrawer(menuBtn) {
+    var overlay = document.createElement('div');
+    overlay.className = 'mob-overlay';
+    var menu = document.createElement('div');
+    menu.className = 'mob-menu'; menu.id = 'mob-menu';
+    menu.setAttribute('role', 'dialog'); menu.setAttribute('aria-modal', 'true'); menu.setAttribute('aria-label', 'תפריט ראשי');
+    menu.innerHTML =
+      '<div class="mob-head">' +
+        '<a class="mob-brand" href="index.html" aria-label="דף הבית"><img src="images/logo.svg" alt="" width="34" height="37"><strong>רוח ערבה</strong></a>' +
+        '<button class="mob-close-btn" type="button" aria-label="סגירת התפריט">✕</button>' +
+      '</div>' +
+      '<nav class="mob-nav" aria-label="ניווט ראשי">' +
+        NAV.filter(function (it) { return it.href !== 'contact.html'; }).map(function (it, i) {
+          if (!it.children) return mobLink(it);
+          var open = it.children.some(function (c) { return c.href === current; });
+          return '<button class="mob-sep-toggle' + (open ? ' open' : '') + '" type="button" aria-expanded="' + open + '" aria-controls="mob-group-' + i + '">' + it.label + '<span class="mob-sep-arrow" aria-hidden="true">▾</span></button>' +
+            '<div class="mob-products' + (open ? ' open' : '') + '" id="mob-group-' + i + '">' + it.children.map(mobLink).join('') + '</div>';
+        }).join('') +
+        '<a class="mob-cta" href="contact.html">יצירת קשר' + PLANE + '</a>' +
+        '<a class="mob-donate" href="' + SITE.donate + '" target="_blank" rel="noopener">תרמו לנו ♥</a>' +
+      '</nav>';
+    document.body.appendChild(overlay);
+    document.body.appendChild(menu);
+
+    var closeBtn = menu.querySelector('.mob-close-btn');
+    function open() {
+      menu.classList.add('open'); overlay.classList.add('open'); menuBtn.classList.add('open');
+      document.body.classList.add('nav-open'); menuBtn.setAttribute('aria-expanded', 'true');
+      setTimeout(function () { closeBtn.focus(); }, 50);
+    }
+    function close() {
+      if (!menu.classList.contains('open')) return;
+      menu.classList.remove('open'); overlay.classList.remove('open'); menuBtn.classList.remove('open');
+      document.body.classList.remove('nav-open'); menuBtn.setAttribute('aria-expanded', 'false');
+      menuBtn.focus();
+    }
+    menuBtn.addEventListener('click', function () { menu.classList.contains('open') ? close() : open(); });
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', close);
+    menu.querySelectorAll('.mob-sep-toggle').forEach(function (t) {
+      t.addEventListener('click', function () {
+        var o = t.classList.toggle('open');
+        t.setAttribute('aria-expanded', o);
+        t.nextElementSibling.classList.toggle('open', o);
+      });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (!menu.classList.contains('open')) return;
+      if (e.key === 'Escape') { close(); return; }
+      if (e.key !== 'Tab') return;
+      var f = Array.prototype.filter.call(menu.querySelectorAll('a,button'), function (x) { return x.offsetParent !== null; });
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    });
+    window.addEventListener('resize', function () { if (window.innerWidth > 1080) close(); });
   }
 
   function renderHeader() {
@@ -75,7 +143,7 @@
     el.innerHTML =
       '<div class="container header-inner">' +
         // בנייד: ההמבורגר בצד ההתחלה (ימין), לפני הלוגו
-        '<button class="menu-btn" aria-label="תפריט" aria-expanded="false" aria-controls="main-nav"><span></span></button>' +
+        '<button class="menu-btn" aria-label="תפריט" aria-expanded="false" aria-controls="mob-menu"><span></span></button>' +
         '<a class="brand" href="index.html" aria-label="' + SITE.name + ' — דף הבית">' +
           '<img src="images/logo.svg" alt="" width="42" height="46">' +
           '<span class="brand-text"><strong>רוח ערבה</strong><small>חינוך · התיישבות · ציונות</small></span>' +
@@ -85,16 +153,8 @@
           '<a class="btn btn-sunset" href="' + SITE.donate + '" target="_blank" rel="noopener">תרמו לנו ♥</a>' +
         '</div>' +
       '</div>';
-    var overlay = document.createElement('div');
-    overlay.className = 'nav-overlay';
-    document.body.appendChild(overlay);
-    overlay.addEventListener('click', function () { document.body.classList.remove('nav-open'); el.querySelector('.menu-btn').setAttribute('aria-expanded', 'false'); });
-
     var menuBtn = el.querySelector('.menu-btn');
-    menuBtn.addEventListener('click', function () {
-      var open = document.body.classList.toggle('nav-open');
-      menuBtn.setAttribute('aria-expanded', open);
-    });
+    renderDrawer(menuBtn);
     el.querySelectorAll('.nav-toggle-sub').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var li = btn.parentElement;
@@ -107,7 +167,7 @@
       if (!e.target.closest('.has-sub')) el.querySelectorAll('.has-sub.open').forEach(function (o) { o.classList.remove('open'); });
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { el.querySelectorAll('.has-sub.open').forEach(function (o) { o.classList.remove('open'); }); document.body.classList.remove('nav-open'); }
+      if (e.key === 'Escape') { el.querySelectorAll('.has-sub.open').forEach(function (o) { o.classList.remove('open'); }); }
     });
     var onScroll = function () { el.classList.toggle('scrolled', window.scrollY > 10); };
     window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
@@ -141,7 +201,11 @@
             '<li><a href="' + SITE.donate + '" target="_blank" rel="noopener">תרומה לעמותה</a></li>' +
           '</ul></div>' +
         '</div>' +
-        '<div class="footer-bottom"><span>© ' + new Date().getFullYear() + ' ' + SITE.name + '. כל הזכויות שמורות.</span><span><a href="accessibility.html">הצהרת נגישות</a> · <a href="privacy.html">מדיניות פרטיות</a></span></div>' +
+        '<div class="footer-bottom">' +
+          '<span>© ' + new Date().getFullYear() + ' כל הזכויות שמורות ל' + SITE.name + '</span>' +
+          '<div class="footer-legal"><a href="accessibility.html">הצהרת נגישות</a><span class="footer-legal-sep" aria-hidden="true">|</span><a href="privacy.html">מדיניות פרטיות</a></div>' +
+          '<a class="ombee-credit" href="https://ombee.co.il" target="_blank" rel="noopener"><span>עיצוב ובנייה ע"י</span><img class="ombee-logo" src="images/ombee-logo-white.webp" alt="OMBee" width="83" height="24"></a>' +
+        '</div>' +
       '</div>';
   }
 

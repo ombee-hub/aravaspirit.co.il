@@ -286,7 +286,7 @@ function get(url) {
   for (let i = 0; i < entries.length; i += 8) {
     await Promise.all(entries.slice(i, i + 8).map(async ([name, id]) => {
       const isPng = /\.png$/i.test(id);
-      const ext = isPng ? 'png' : 'jpg';
+      const ext = 'webp';
       const file = path.join(OUT, `${name}.${ext}`);
       if (fs.existsSync(file)) { ok++; return; }
       const url = `https://static.wixstatic.com/media/${id}/v1/fit/w_${MAX},h_${MAX},q_82/${name}.${ext}`;
